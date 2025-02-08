@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { TodoFilter } from '../../types/todo';
 import { Input } from '../ui/Input';
 

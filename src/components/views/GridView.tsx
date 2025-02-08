@@ -1,3 +1,4 @@
+import React from 'react';
 import { Todo, TodoFilter } from '../../types/todo';
 import { TodoItem } from '../todo/TodoItem';
 
@@ -10,25 +11,9 @@ interface GridViewProps {
 }
 
 export const GridView = ({ todos, filter, onToggle, onDelete, onEdit }: GridViewProps) => {
-  const filteredTodos = todos.filter(todo => {
-    if (filter.search && !todo.title.toLowerCase().includes(filter.search.toLowerCase())) {
-      return false;
-    }
-    if (filter.completed !== undefined && todo.completed !== filter.completed) {
-      return false;
-    }
-    if (filter.priority && todo.priority !== filter.priority) {
-      return false;
-    }
-    if (filter.category && todo.category !== filter.category) {
-      return false;
-    }
-    return true;
-  });
-
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {filteredTodos.map(todo => (
+      {todos.map(todo => (
         <TodoItem
           key={todo.id}
           todo={todo}
@@ -37,6 +22,11 @@ export const GridView = ({ todos, filter, onToggle, onDelete, onEdit }: GridView
           onEdit={onEdit}
         />
       ))}
+      {todos.length === 0 && (
+        <div className="col-span-full text-center text-gray-500">
+          No todos found
+        </div>
+      )}
     </div>
   );
 }; 

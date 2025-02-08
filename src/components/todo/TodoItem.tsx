@@ -1,4 +1,5 @@
-import { Todo } from '../../types/todo';
+import React from 'react';
+import { Todo, Priority } from '../../types/todo';
 import { Button } from '../ui/Button';
 
 interface TodoItemProps {
@@ -15,6 +16,17 @@ export const TodoItem = ({ todo, onToggle, onDelete, onEdit }: TodoItemProps) =>
     LOW: 'text-green-600'
   };
 
+  const handleEdit = () => {
+    const newTitle = prompt('Enter new title:', todo.title);
+    if (newTitle && newTitle.trim() !== todo.title) {
+      onEdit(todo.id, { title: newTitle.trim() });
+    }
+  };
+
+  const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onEdit(todo.id, { priority: e.target.value as Priority });
+  };
+
   return (
     <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow">
       <div className="flex items-center gap-4">
@@ -29,7 +41,15 @@ export const TodoItem = ({ todo, onToggle, onDelete, onEdit }: TodoItemProps) =>
             {todo.title}
           </h3>
           <div className="text-sm text-gray-500 space-x-2">
-            <span className={priorityColors[todo.priority]}>{todo.priority}</span>
+            <select
+              value={todo.priority}
+              onChange={handlePriorityChange}
+              className={`${priorityColors[todo.priority]} bg-transparent border-none`}
+            >
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
             {todo.category && <span>• {todo.category}</span>}
             {todo.dueDate && (
               <span>• Due: {new Date(todo.dueDate).toLocaleDateString()}</span>
@@ -38,10 +58,7 @@ export const TodoItem = ({ todo, onToggle, onDelete, onEdit }: TodoItemProps) =>
         </div>
       </div>
       <div className="flex gap-2">
-        <Button variant="secondary" onClick={() => {
-          const newTitle = prompt('Enter new title:', todo.title);
-          if (newTitle) onEdit(todo.id, { title: newTitle });
-        }}>
+        <Button variant="secondary" onClick={handleEdit}>
           Edit
         </Button>
         <Button variant="danger" onClick={() => onDelete(todo.id)}>

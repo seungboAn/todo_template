@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import * as React from 'react';
+const { useState } = React;
 import Calendar from 'react-calendar';
 import { Todo } from '../../types/todo';
 import { TodoItem } from '../todo/TodoItem';
@@ -12,7 +13,7 @@ interface CalendarViewProps {
 }
 
 export const CalendarView = ({ todos, onToggle, onDelete, onEdit }: CalendarViewProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = React.useState<Date>(new Date());
 
   const todosForDate = todos.filter(todo => {
     if (!todo.dueDate) return false;

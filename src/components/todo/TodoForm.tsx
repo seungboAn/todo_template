@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import * as React from 'react';
+const { useState } = React;
 import { Priority } from '../../types/todo';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
@@ -20,12 +21,15 @@ export const TodoForm = ({ onSubmit }: TodoFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!title.trim()) return;
+    
     onSubmit({
-      title,
+      title: title.trim(),
       priority,
       dueDate: dueDate || undefined,
-      category: category || undefined
+      category: category.trim() || undefined
     });
+    
     setTitle('');
     setPriority('MEDIUM');
     setDueDate('');
